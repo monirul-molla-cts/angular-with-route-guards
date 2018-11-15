@@ -1,0 +1,66 @@
+<div class="container">
+  <div class="jumbotron" style="width:50%;" >
+  <h2>Form with Validations</h2>
+  <form (ngSubmit)="submitForm()" [formGroup]="complexForm">
+  
+  
+    <div class="form-group">
+  
+    <label>First Name:</label>
+    <input id="firstName" class="form-control" type="text" placeholder="John" formControlName="firstName">
+  
+    <div *ngIf="firstName.errors?.required  && firstName.touched" class="alert alert-danger">You must include a first
+      name.</div>
+      <div *ngIf="firstName.errors?.hasPunctuation" class="alert alert-danger">Name must not have ! or $ characters.</div>
+  
+    </div>
+  
+  
+    <div class="form-group">
+    <label>Last Name</label>
+    <input id="lastName" class="form-control" type="text" placeholder="Doe" formControlName="lastName">
+    <div *ngIf="lastName.errors?.required && lastName.touched" class="alert alert-danger">You must include a last
+      name.</div>
+    <div *ngIf="lastName.errors?.minlength && lastName.touched" class="alert alert-danger">Your last name must be at
+      least 5 characters long.</div>
+    <div *ngIf="lastName.errors?.maxlength && lastName.touched" class="alert alert-danger">Your last name cannot
+      exceed 10 characters.</div>
+    </div>
+    <div class="form-group">
+    <label>Gender</label>
+    <div class="alert alert-danger" *ngIf="!gender.valid && gender.touched">You must select a gender.</div>
+    </div>
+    <div class="radio">
+    <label>
+      <input type="radio" name="gender" value="Male" formControlName="gender">
+      Male
+    </label>
+    </div>
+    <div class="radio">
+    <label>
+      <input type="radio" name="gender" value="Female" formControlName="gender">
+      Female
+    </label>
+    </div>
+    <div class="form-group">
+    <fieldset formGroupName="activities">
+      <div class="form-group">
+      <label>Activities</label>
+      </div>
+      <label class="checkbox-inline">
+      <input type="checkbox" value="hiking" name="hiking" formControlName="hiking"> Hiking
+      </label>
+      <label class="checkbox-inline">
+      <input type="checkbox" value="swimming" name="swimming" formControlName="swimming"> Swimming
+      </label>
+      <label class="checkbox-inline">
+      <input type="checkbox" value="running" name="running" formControlName="running"> Running
+      </label>
+    </fieldset>
+    </div>
+    <div class="form-group">
+    <button type="submit" class="btn btn-primary" [disabled]="!complexForm.valid">Submit</button>
+    </div>
+  </form>
+  </div>
+</div>

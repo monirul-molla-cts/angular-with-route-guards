@@ -1,0 +1,44 @@
+
+<h2>Asyncronus Observables Call</h2>
+<div *ngFor="let dev of observableDevs | async">
+<h3><a [routerLink]="['/bio',dev.id]">{{dev.firstName}}</a></h3>
+</div>	
+
+<h2>Asyncronus Promise Call</h2>
+				<div *ngFor="let dev of promiseDevs | async">
+				<h3><a [routerLink]="['/bio',dev.id]">{{dev.firstName}}</a></h3>
+    </div>
+    
+<h2>Developers</h2>
+  <div *ngFor="let dev of devs">
+  <h3><a [routerLink]="['/bio',dev.id]">{{dev.firstName | uppercase}}</a></h3>
+</div>
+
+<p><span class="columnHeader">:::::::::::::::::::Structural Directive *ngFor :::::::::::::::::::::</span> </p>
+<div *ngFor="let dev of devs">
+  <p><span class="bold">First Name:</span> {{dev.firstName}}</p>
+  <p><span class="bold">Last Name:</span> {{dev.lastName}}</p>
+  <p><span class="bold">Favorite Language:</span> {{dev.favoriteLanguage}}</p>
+  <p><span class="bold">Year Started:</span> {{dev.yearStarted}}</p>
+  <hr>
+</div> 
+
+<!--
+<p><span class="columnHeader">:::::::::::::::::::Structural Directive *ngIf :::::::::::::::::::::</span> </p>
+<div *ngIf="dev1 | async">
+  <p><span class="bold">First Name:</span> {{dev1.firstName}}</p>
+  <p><span class="bold">Last Name:</span> {{dev1.lastName}}</p>
+  <p><span class="bold">Favorite Language:</span> {{dev1.favoriteLanguage}}</p>
+  <p><span class="bold">Year Started:</span> {{dev1.yearStarted}}</p>
+</div> 
+
+
+
+
+<p><span class="columnHeader">:::::::::::::::::::Normal Use of Component and Class :::::::::::::::::::::</span> </p>
+<p><span class="bold">First Name:</span> {{dev.firstName}}</p>
+<p><span class="bold">Last Name:</span> {{dev.lastName}}</p>
+<p><span class="bold">Favorite Language:</span> {{dev.favoriteLanguage}}</p>
+<p><span class="bold">Year Started:</span> {{dev.yearStarted}}</p>
+
+-->

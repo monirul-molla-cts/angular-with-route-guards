@@ -1,0 +1,438 @@
+
+
+
+
+======================================================================================================================================
+### Practice - Create a hello-angular-practice project
+   
+   1) Use the below command to create a new angular project 
+   
+      ng new hello-angular-practice
+
+
+	  
+	  
+	  
+	  
+### Practice  data-binding in hello-angular-practice:
+
+	1)  Data Binding -Interpolation:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+		a) add the following in app.component.html
+		
+		   {{ title }}
+		   
+		b) add the following in the app.component.ts
+		
+		   title = 'My Angular Sandbox';
+		   
+		   
+	2)  Data Binding -Property Binding::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	    a) add the below piec of code in app.component.html to change the text color of h2
+		   <h2 style= "color:green;">Here are some links to help you start: </h2>
+		   
+		a) replace the style with the following in the app.component.html
+		
+			<h2 [style.color]="myColor">Here are some links to help you start: </h2>
+		
+		b) add the following in the app.component.ts
+		
+			myColor:string = "red";
+		
+		
+	3)  Data Binding -Event Binding:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+		a) Add the following in the app.component.html
+			<button (click)="changeColor()">Change Color</button>
+		
+		b) Add the following function in the app.component.ts
+		
+			changeColor():void {
+				this.myColor = 'green';
+			} 
+		
+
+	4)  Data Binding -Two-way Binding:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+		a) add the following in the app.component.html
+		
+			<input [(ngModel)]="myColor"/>
+			
+			
+		b) Add the following in the app.component.ts
+		
+			myColor:string = "red";
+			
+			
+		c) imports FormsModule in the app.module.ts
+		
+			import { BrowserModule } from '@angular/platform-browser';
+			import { NgModule } from '@angular/core';
+			import {FormsModule} from '@angular/forms';
+
+			import { AppComponent } from './app.component';
+
+			@NgModule({
+			  declarations: [
+				AppComponent
+			  ],
+			  imports: [
+				BrowserModule,
+				FormsModule
+			  ],
+			  providers: [],
+			  bootstrap: [AppComponent]
+			})
+			export class AppModule { }
+	 
+	
+
+        ??????????
+
+	
+### Practice class and component in hello-angular-practice:
+
+	1) Steps to create a class:
+
+		a) Create a Developer class in hello-angular-practice using the below command.
+		
+			ng g class Developer
+			
+			
+		  
+		b) Inside Developer class create a firstName, lastName, and favoriteLanguage property as strings and a yearStarted property as a number.
+		
+			firstName: string;
+			lastName: string;
+			favoriteLanguage: string;
+			yearStarted: number;
+			
+			
+			
+		c) Create a construct that receives all values and stores them locally
+		
+			constructor(firstName:string,lastName:string,favoriteLanguage:string,yearStarted:number){
+				this.firstName = firstName;
+				this.lastName =lastName;
+				this.favoriteLanguage = favoriteLanguage;
+				this.yearStarted = yearStarted;
+			}
+			
+	2) Steps to create a component and how to use component with view (html):
+	 
+		a) Create a Bio component in hello-angular-practice project using the below command
+			
+			ng g component Bio
+			
+			
+			
+		b) Create a class level property "dev" of type Developer inside the bio.component.ts and instantiate the dev property inside the constructor.
+		   
+			dev:Developer
+			constructor() {
+				this.dev = new Developer("Monirul","Molla","Java",2008);
+			}
+			
+			
+			
+		c) Then add the following pice of html code in the bio.component.html
+		   
+			<p><span class="columnHeader">:::::::::::::::::::Normal Use of Component and Class :::::::::::::::::::::</span> </p>
+			<p><span class="bold">First Name:</span> {{dev.firstName}}</p>
+			<p><span class="bold">Last Name:</span> {{dev.lastName}}</p>
+			<p><span class="bold">Favorite Language:</span> {{dev.favoriteLanguage}}</p>
+			<p><span class="bold">Year Started:</span> {{dev.yearStarted}}</p>
+		
+		
+		d) Since we have used two css class columnHeader and bold in the above html, so please define the two css classes in bio.component.css
+			
+			.bold{
+				font-weight: bold; 
+			}
+			.columnHeader{
+				background-color: blue;
+				color: white;
+			}
+			
+		e) And then to show the view of the bio component, add the below element in the app.component.html
+		   
+			<app-bio></app-bio> 
+		
+		
+   
+	????????????
+	
+	
+### Practice Structural Directive in hello-angular:
+
+	1) *ngIf structural directive
+             
+			 
+		a) Create a class level property "dev1" of type Developer inside the bio.component.ts and instantiate the dev1 property inside the constructor.
+		   
+			dev1:Developer;
+			constructor() {
+				this.dev1 = new Developer("John","Doe","Angular",2015);
+			}
+	
+	   
+		b) add the following lines of html code to bio.component.html
+	
+			<p><span class="columnHeader">:::::::::::::::::::Structural Directive *ngIf :::::::::::::::::::::</span> </p>
+			<div *ngIf="dev1">
+				<p><span class="bold">First Name:</span> {{dev1.firstName}}</p>
+				<p><span class="bold">Last Name:</span> {{dev1.lastName}}</p>
+				<p><span class="bold">Favorite Language:</span> {{dev1.favoriteLanguage}}</p>
+				<p><span class="bold">Year Started:</span> {{dev1.yearStarted}}</p>
+			</div> 
+			
+	
+	2) *ngFor structural directive
+             
+			 
+		a) Create a class level property "devs" of type Developer[] array inside the bio.component.ts and instantiate the devs property inside the constructor.
+		   
+			devs:Developer[];
+			constructor() {
+				this.devs = [new Developer("Rick","Olson","Angular",2010),
+				             new Developer("John","Papa","Angular",2000)
+							];
+			}
+	
+	   
+		b) add the following lines of html code to bio.component.html
+	
+			<p><span class="columnHeader">:::::::::::::::::::Structural Directive *ngFor :::::::::::::::::::::</span> </p>
+			<div *ngFor="let dev of devs">
+				<p><span class="bold">First Name:</span> {{dev.firstName}}</p>
+				<p><span class="bold">Last Name:</span> {{dev.lastName}}</p>
+				<p><span class="bold">Favorite Language:</span> {{dev.favoriteLanguage}}</p>
+				<p><span class="bold">Year Started:</span> {{dev.yearStarted}}</p>
+				<hr>
+			</div> 
+			
+		
+	    
+###Practice Service in hello-angular-practice:
+
+	1) add a new attribute "id:string" to developer.ts class 
+
+
+		export class Developer {
+
+			constructor(public id: string,public firstName:string,public lastName:string,public favoriteLanguage:string, public yearStarted:number){
+				this.id = id;
+				this.firstName = firstName;
+				this.lastName =lastName;
+				this.favoriteLanguage = favoriteLanguage;
+				this.yearStarted = yearStarted;
+			}
+		}
+
+
+
+	2) create a developer service class using the following commands:
+
+		ng g service developer
+		
+		
+	3) Copy the devs property from the from bio.component.ts to developer.service.ts
+		
+		  devs: Developer[];
+		  constructor() {
+			this.devs = [new Developer("Rick","Olson","Angular",2010),
+				             new Developer("John","Papa","Angular",2000)
+							];
+		   }
+		   
+	4) Create a new function getAllDevelopers() inside developer.service.ts to fetch all the developers from the service.
+	
+		getAllDevelopers():Developer[]{
+			return this.devs;
+		}
+		
+		
+	5) Inject developer Service to bio.component.ts to get the data from the service.
+	
+		import { DeveloperService } from '../developer.service';
+		
+	    constructor(developerService: DeveloperService) {
+	    }
+	
+	
+  
+	6) Then call service function getAllDevelopers to get the data from the service and update the local property.
+		
+		constructor(developerService: DeveloperService) {
+
+			//Instead of using the local data calling the service to get the data
+			this.devs =developerService.getAllDevelopers();
+			this.dev = this.devs[0];
+			this.dev1 = this.devs[1];
+			
+	   }
+	
+###Practice Routing in hello-angular-practice:
+
+	1) Create a Home component in hello-angular-practice project using the below command
+			
+			ng g component Home
+			
+	2) Copy and move the contents from app.component.html to home.component.html
+	
+		<div style="text-align:center">
+			  <h1>
+				Welcome to {{ title }}!
+			  </h1>
+			  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+			</div>
+			<app-bio></app-bio>
+			<input [(ngModel)]="myColor"/><br>
+			<button (click)="changeColor()">Change Color</button><br>
+			<h2 [style.color]="myColor">Here are some links to help you start: </h2>
+			<ul>
+			  <li>
+				<h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
+			  </li>
+			  <li>
+				<h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
+			  </li>
+			  <li>
+				<h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
+			  </li>
+			</ul> 
+		
+	3) Copy and move only the properties and functions from app.component.ts to home.component.ts
+	
+		title = 'My Angular Sandbox';
+		myColor: string = 'blue';
+		constructor() { }
+		changeColor():void{
+			this.myColor = 'green';
+		}
+		
+		
+	4) Use the below command to create an app-routing-module (app-routing.module.ts)
+	
+		ng g module app-routing --flat --module=app
+		
+		--flat flag will place the module in the top level
+        --module=app will add the import for app-routing inside of AppModule.
+		You can include routing from the initial creation of a project by adding the --routing flag
+		
+		
+		
+	5) Add the routes path in the app-routing.module.ts
+		import { NgModule } from '@angular/core';
+		
+		//import the home component and bio component
+		import { Routes, RouterModule } from '@angular/router';
+		import {HomeComponent} from './home/home.component';
+		import {BioComponent} from './bio/bio.component';
+
+		//Then added the routes path
+		const routes: Routes =[
+		  {path:'', component: HomeComponent},
+		  {path:'bio', component: BioComponent}
+		];
+
+		@NgModule({
+		  imports: [RouterModule.forRoot(routes)],
+		  exports: [RouterModule]
+		})
+		export class AppRoutingModule { } 
+
+
+    6) Add the below navigation menu html and <router-outlet></router-outlet> in app.component.html
+	
+		<nav class="navbar navbar-expand-sm bg-light">
+		  <ul class="navbar-nav">
+			<li class="nav-item">
+			  <a class="nav-link" routerLink="">Home</a>
+			</li>
+			<li class="nav-item">
+			  <a class="nav-link" routerLink="/bio">My Bio</a>
+			</li>
+		  </ul>
+		</nav>
+
+		<router-outlet></router-outlet>
+		
+	7) add bootstrap cdn link to index.html
+	
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+
+	
+	
+	
+	
+###Practice more on Routing in hello-angular-practice:
+	
+	1) Create a BioDetails component using the following commands
+	
+		ng g component BioDetails
+		
+	2) Update routing in app.routing.module.ts for BioDetails component
+	
+		import { NgModule } from '@angular/core';
+		import { Routes, RouterModule } from '@angular/router';
+
+		//import the home component and bio component
+		import {HomeComponent} from './home/home.component';
+		import {BioComponent} from './bio/bio.component';
+		import { BioDetailsComponent } from './bio-details/bio-details.component';
+
+		//Then added the routes path
+		const routes: Routes =[
+		  {path:'', component: HomeComponent},
+		  {path:'bio', component: BioComponent},
+		  {path:'bio/:id', component: BioDetailsComponent}
+		];
+
+		@NgModule({
+		  imports: [RouterModule.forRoot(routes)],
+		  exports: [RouterModule]
+		})
+		export class AppRoutingModule { } 
+		
+		
+	3) add routerLink in the developer name of bio.component.html
+
+		<h2>Developers</h2>
+			<div *ngFor="let dev of devs">
+			<h3><a [routerLink]="['/bio',dev.id]">{{dev.firstName}}</a></h3>
+		</div>
+		
+		
+	4)Add getDeveloperById to developer.service.ts to get developer bio details from the service
+	
+		getDeveloperById(devId:string):Developer{
+				return this.devs.find(x => x.id == devId);
+			}
+		
+	5) Inject activated route and developer service to bio-details.component.ts
+		
+		
+		import { ActivatedRoute } from '@angular/router';
+		import { DeveloperService } from '../developer.service';
+		import { Developer } from '../developer';
+
+		dev:Developer;
+		  
+		constructor(private route:ActivatedRoute,private developerService:DeveloperService) {
+			this.dev = developerService.getDeveloperById(this.route.snapshot.params['id']);
+		}
+		
+		
+		
+	6) Add the following html to bio-details.component.html to show the developers information
+	
+	
+		<div>
+			<p><span class="bold">First Name:</span> {{dev?.firstName}}</p>
+			<p><span c1ass="bold">Last Name:</span> {{dev?.lastName}}</p>
+			<p><span c1ass="bold">Favorite Language:</span> {{dev?.favoriteLanguage}}</p>
+			<p><span c1ass="bold">Year Started:</span> {{dev?.yearStarted}}</p>
+		</div> 	
+	
+
+	
+	
