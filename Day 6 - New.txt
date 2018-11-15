@@ -1,0 +1,432 @@
+
+
+###Practice http and observables in hello-angular:
+
+
+	1) Update the developer.service.ts to retrieve the live data from an api.
+		a) Import HttpCIient, Observable, catchError, and map.
+		       
+			    import {HttpClient} from '@angular/common/http';
+				import {Observable} from 'rxjs';
+				import {catchError, map} from 'rxjs/operators';
+				
+				
+		b) Inject HttpClient in constructor and delete ’hard coded’ developers
+		
+		        constructor(private httpClient:HttpClient){}
+			
+	    c) create a local url string propert for http://localhost:3000/
+		
+		        private url:string = "http://localhost:3000/users";			
+				
+		d) Change the return type of the getAllDevelopers() method to Observable<Developer[]>
+		
+		         getAllDevelopers(): Observable<Developer[]> {
+					return this.httpClient.get<Developer[]>(this.url+"users").pipe(
+					  map(response => {this.devs = response; return response;}),
+					  catchError(this.handleError<any>()));
+				  }
+				  
+				 
+		
+		
+	2) replace the bio.component.ts with the below complete code call
+	
+			import { Component, OnInit } from '@angular/core';
+			import { Developer } from '../developer';
+			import { DeveloperService } from '../developer.service';
+
+			@Component({
+			  selector: 'app-bio',
+			  templateUrl: './bio.component.html',
+			  styleUrls: ['./bio.component.css']
+			})
+			export class BioComponent implements OnInit {
+			  devs:Developer[];
+			  constructor(private developerService: DeveloperService) {}
+
+			   getDevelopers(): void{
+				this.developerService.getAllDevelopers().subscribe(
+				  response => {this.devs = response;console.log("Recieved Data"); },
+				  error => console.log("My Error : ", error),
+				  () => console.log("onComplete")
+				  );
+			   }
+			   
+			  ngOnInit() {
+				this.getDevelopers();
+			  }
+
+			}
+
+ 
+	3) Add HttpClientModule to app.module.ts 
+	
+	        a) import httpClient module in app.module.ts
+			import {HttpClientModule} from '@angular/common/http';
+			
+			b) add the HttpClientModule to imports array of @NgModule.
+
+			
+	4) comment the following piece of code from bio.component.html
+			<!--
+			<p><span class="columnHeader">:::::::::::::::::::Structural Directive *ngIf :::::::::::::::::::::</span> </p>
+			<div *ngIf="dev1 | async">
+			  <p><span class="bold">First Name:</span> {{dev1.firstName}}</p>
+			  <p><span class="bold">Last Name:</span> {{dev1.lastName}}</p>
+			  <p><span class="bold">Favorite Language:</span> {{dev1.favoriteLanguage}}</p>
+			  <p><span class="bold">Year Started:</span> {{dev1.yearStarted}}</p>
+			</div> 
+
+
+
+
+
+			<p><span class="columnHeader">:::::::::::::::::::Normal Use of Component and Class :::::::::::::::::::::</span> </p>
+			<p><span class="bold">First Name:</span> {{dev.firstName}}</p>
+			<p><span class="bold">Last Name:</span> {{dev.lastName}}</p>
+			<p><span class="bold">Favorite Language:</span> {{dev.favoriteLanguage}}</p>
+			<p><span class="bold">Year Started:</span> {{dev.yearStarted}}</p>
+			-->
+			
+			
+
+			
+### understanding promise-vs-observables
+
+1) import the following in home.component.ts
+
+import { Observable } from 'rxjs';
+import { map, filter } from 'rxjs/operators';
+
+
+2) add the below method to home.component.ts
+
+myObserables(){
+
+      ///////////////////////////////////////
+      //  1.  Promise API of JavaScript    //
+      ///////////////////////////////////////
+      //Simple example of Promise {Promise API of JavaScript}
+      /*
+      Promise is instantiated with the new keyword. 
+      In the constructor, we pass in a function that will pass a reference to a resolve function. 
+      Using this special resolver function, we can run some async task and 
+      when it completes passing the value to the resolve for the consumer of our promise to receive the value.
+      */
+      const promise = new Promise(resolve => {
+        setTimeout(() => {
+          resolve('Hello from a Promise!');
+        }, 2000);
+      });
+
+      promise.then(value => console.log(value));
+
+
+
+
+      ///////////////////////////////////////
+      // 2.   RxJS Observables    //
+      ///////////////////////////////////////
+      /*
+      An Observable is a unique Object similar to a Promise that can help manage async code.
+      Part of RxJs Library.
+      */
+
+      /*
+      let observable = new Observable(observer => {
+        setTimeout(() => {
+          observer.next('Hello from a Observable!');
+        }, 2000);
+      });
+
+      observable.subscribe(value => console.log(value));
+
+      */
+
+
+
+      /////////////////////////////////////////////////////////////////
+      // 3.   RxJS Observables setInterval to show multiple values   //
+      ////////////////////////////////////////////////////////////////
+    
+      /*
+        const interval = new Observable(observer => {
+          let count = 0;
+          const interval = setInterval(() => {
+            observer.next(count++);
+          }, 1000);
+        
+          // once we stop listening to values clear the interval
+          return () => {
+            clearInterval(interval);
+          }
+        });
+      */
+    
+      //interval.subscribe(value => console.log(value));
+
+
+
+      /////////////////////////////////////////
+      // 4.   RxJS Observables unsubscribe  //
+      /////////////////////////////////////////
+
+      //const subscription = interval.subscribe(value => console.log(value));
+      //setTimeout(() => subscription.unsubscribe(), 4000);
+
+
+
+
+      /////////////////////////////////////////
+      // 5.   RxJS Observables map operation  //
+      /////////////////////////////////////////
+
+      // interval.pipe(
+      //   map((value:number) => value * value)
+      // ).subscribe(value => console.log(value));
+
+
+
+
+
+
+    
+      ///////////////////////////////////////////////////
+      // 6.   RxJS Observables map and filter operator  //
+      ///////////////////////////////////////////////////
+      /*
+          interval.pipe(
+            map((value:number) => value * value),
+            filter(value => value % 2 === 0)
+          ).subscribe(value => console.log(value));
+
+      */
+
+
+}	
+
+
+
+	
+			
+3) Then call the avobe function from ngOnIt function of home.component.ts	
+
+this.myObserables();
+
+
+
+		
+		
+		
+		
+		
+		
+		
+			
+###Practice async promise in hello-angular:		
+			
+1) add the following methods in developer.service.ts to get developers with promise.
+
+	   getDevelopersWithPromise(): Promise<Developer[]> {
+			return this.httpClient.get<Developer[]>(this.url+"users").toPromise().then((res) => {return res});
+	   }		
+  
+2) add the following property inside bio.component.ts
+
+		promiseDevs: Promise<Developer[]>
+		
+	
+3) add the below pice of code inside ngOnit function of bio.component.ts
+
+		this.promiseDevs = this.developerService.getDevelopersWithPromise();
+		
+		
+	
+4) add the below html to show  developers information using async promise
+
+		<h2>Asyncronus Promise Call</h2>
+				<div *ngFor="let dev of promiseDevs | async">
+				<h3><a [routerLink]="['/bio',dev.id]">{{dev.firstName}}</a></h3>
+		</div>
+			
+			
+	
+
+
+
+	
+			
+###Practice async observables in hello-angular:	
+
+1) import obserables in bio.component.ts
+
+    import { Observable } from 'rxjs';
+	
+	
+2) add the following property inside bio.component.ts
+
+	observableDevs: Observable<Developer[]>	
+	
+	
+3) add the below pice of code inside ngOnit function of bio.component.ts
+
+	this.observableDevs = this.developerService.getAllDevelopers();
+			
+			
+4) add the below html to show  developers information using async observable
+
+		<h2>Asyncronus Observables Call</h2>
+				<div *ngFor="let dev of observableDevs | async">
+				<h3><a [routerLink]="['/bio',dev.id]">{{dev.firstName}}</a></h3>
+		</div>		
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+###Practice bio-create form in hello-angular:
+
+
+
+1) Create a BioCreate component using the following commands
+	
+		ng g component BioCreate
+
+
+
+
+2) add bio-create.component to routes to app-routing.module.ts
+	import {BioCreateComponent} from './bio-create/bio-create.component';
+
+	{path:'create-bio', component:BioCreateComponent}
+	
+	
+	
+3) add create-bio router link to app.component.html
+
+	<li class="nav-item">
+    <a class="nav-link" routerLink="/create-bio">Create Bio</a>
+    </li>
+  </ul>
+
+4) imports FormsModule add ReactiveFormsModule add to imports of @NgModule decorator
+
+    import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+	
+	FormsModule,
+    ReactiveFormsModule,
+	
+	
+	
+	
+5)  Addd the below to bio-create.component.html
+	<div class="container">
+	  <h1>Add New Developer Bio</h1>
+	  <div class="row">
+		<div class="col-md-6">
+		  <form (ngSubmit)="saveDeveloper()" [formGroup]="devForm">
+			<div class="form-group">
+			  <label for="firstName">First Name</label>
+			  <input type="text" class="form-control" formControlName="firstName">
+			</div>
+			<div class="form-group">
+				<label for="lastName">Last Name</label>
+				<input type="text" class="form-control" formControlName="lastName">
+			</div>
+			<div class="form-group">
+				<label for="favoriteLanguage">Favorite Language</label>
+				<input type="text" class="form-control" formControlName="favoriteLanguage">
+			</div>
+			<div class="form-group">
+				<label for="yearStarted">Year Started</label>
+				<input type="text" class="form-control" formControlName="yearStarted">
+			</div>
+			<div class="form-group">
+			  <button type="submit" class="btn btn-success">Save</button>
+			</div>
+		  </form>
+		</div>
+	  </div>
+
+	</div>
+
+	
+	
+	
+6) add the following to bio-create.component.ts
+
+		import { Component, OnInit } from '@angular/core';
+
+		import { FormControl, FormBuilder, Validators } from '@angular/forms';
+		import { DeveloperService } from '../developer.service';
+		import { ActivatedRoute, Router } from '@angular/router';
+
+		@Component({
+		  selector: 'app-bio-create',
+		  templateUrl: './bio-create.component.html',
+		  styleUrls: ['./bio-create.component.css']
+		})
+		export class BioCreateComponent implements OnInit {
+		  
+		 
+		  
+		  devForm=this.fb.group({
+			  'firstName': new FormControl('',[Validators.required]),
+			  'lastName' : new FormControl('',[Validators.required]),
+			  'favoriteLanguage': new FormControl('',[Validators.required]),
+			  'yearStarted': new FormControl('',[Validators.required])
+		  })
+
+		  get firstName(){return this.devForm.get('firstName')}
+		  get lastName(){return this.devForm.get('lastName')}
+		  get favoriteLanguage(){return this.devForm.get('favoriteLanguage')}
+		  get yearStarted(){return this.devForm.get('yearStarted')}
+
+		  constructor(private fb:FormBuilder, private developerService: DeveloperService,
+			private router:Router) { }
+
+
+		  prepareSave(): any{
+			let userData = {
+				"firstName": this.firstName.value,
+				"lastName":this.lastName.value,
+				"favoriteLanguage": this.favoriteLanguage.value,
+				"yearStarted":this.yearStarted.value
+			}
+			return userData;
+		 }
+
+		  saveDeveloper():void{
+			let formModel = this.prepareSave();
+			this.developerService.addDeveloper(formModel);
+			this.router.navigate(['/bio']);
+		  }
+
+		  ngOnInit() {
+		  }
+
+		}
+		
+		
+		
+7)  Add the below code to developer.service.ts
+
+ addDeveloper(formModel: FormData): boolean {
+    this.httpClient.post(this.url+"addBio", formModel)
+      .subscribe(res=>{},(err)=>{
+        console.log(err);
+      });
+      return true;
+  }
+
+
